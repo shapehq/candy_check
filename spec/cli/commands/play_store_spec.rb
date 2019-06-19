@@ -21,7 +21,7 @@ describe CandyCheck::CLI::Commands::PlayStore do
     stub = proc do |*args|
       @verifier = DummyPlayStoreVerifier.new(*args)
     end
-    CandyCheck::PlayStore::Verifier.stub :new, stub do
+    CandyCheck::PlayStore::PlayClient.stub :new, stub do
       run_command!
     end
   end

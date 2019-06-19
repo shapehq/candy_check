@@ -2,7 +2,7 @@ module CandyCheck
   module PlayStore
     # Verifies purchase tokens against the Google API.
     # The call return either an {Receipt} or a {VerificationFailure}
-    class Verifier
+    class PlayClient
       # Error thrown when the verifier isn't booted before the first
       # verification check or on double invocation
       class BootRequiredError < RuntimeError; end
@@ -45,6 +45,14 @@ module CandyCheck
       def verify_subscription(package, subscription_id, token)
         check_boot!
         v = SubscriptionVerification.new(
+          @client, package, subscription_id, token
+        )
+        v.call!
+      end
+
+      def acknowledge_purchase(package, subscription_id, token)
+        check_boot!
+        v = AcknowledgePurchase.new(
           @client, package, subscription_id, token
         )
         v.call!
