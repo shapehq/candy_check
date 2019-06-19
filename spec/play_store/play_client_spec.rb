@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe CandyCheck::PlayStore::Verifier do
-  subject { CandyCheck::PlayStore::Verifier.new(config) }
+describe CandyCheck::PlayStore::PlayClient do
+  subject { CandyCheck::PlayStore::PlayClient.new(config) }
   let(:config) do
     CandyCheck::PlayStore::Config
       .new(
@@ -23,7 +23,7 @@ describe CandyCheck::PlayStore::Verifier do
   it 'requires a boot before verification' do
     proc do
       subject.verify(package, product_id, token)
-    end.must_raise CandyCheck::PlayStore::Verifier::BootRequiredError
+    end.must_raise CandyCheck::PlayStore::PlayClient::BootRequiredError
   end
 
   it 'it configures and boots a client but raises on second boot!' do
@@ -35,7 +35,7 @@ describe CandyCheck::PlayStore::Verifier do
 
     proc do
       subject.boot!
-    end.must_raise CandyCheck::PlayStore::Verifier::BootRequiredError
+    end.must_raise CandyCheck::PlayStore::PlayClient::BootRequiredError
   end
 
   it 'uses a verifier when booted' do

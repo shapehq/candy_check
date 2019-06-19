@@ -21,7 +21,7 @@ module CandyCheck
       # API discovery namespace
       API_DISCOVER = 'androidpublisher'.freeze
       # API version
-      API_VERSION  = 'v2'.freeze
+      API_VERSION  = 'v3'.freeze
 
       # Initializes a client using a configuration.
       # @param config [ClientConfig]
@@ -72,6 +72,21 @@ module CandyCheck
         execute(parameters, rpc.purchases.subscriptions.get)
       end
 
+      # Calls the remote API to load the product information for a specific
+      # combination of parameter which should be loaded from the client.
+      # @param package [String] the app's package name
+      # @param subscription_id [String] the app's item id
+      # @param token [String] the purchase token
+      # @return [Hash] result of the API call
+      def acknowledge_purchase(package, subscription_id, token)
+        parameters = {
+            'packageName'    => package,
+            'subscriptionId' => subscription_id,
+            'token'          => token
+        }
+        execute(parameters, rpc.purchases.subscriptions.acknowledge)
+      end
+
       private
 
       attr_reader :config, :api_client, :rpc
@@ -81,10 +96,11 @@ module CandyCheck
       # @param api_method [Method] which api method to call
       # @return [hash] the data response, as a hash
       def execute(parameters, api_method)
-        api_client.execute(
+        data = api_client.execute(
           api_method: api_method,
           parameters: parameters
-        ).data.to_hash
+        ).data
+        return data.to_hash if data.present?
       end
 
       # Builds a custom user agent to prevent Google::APIClient to
@@ -121,7 +137,7 @@ module CandyCheck
       end
 
       def validate_rpc!
-        return if rpc.purchases.products.get
+        return if rpc.purchases.products.get || rpc.purchases.acknowledge
         raise DiscoveryError, 'Unable to get the API discovery'
       rescue NoMethodError
         raise DiscoveryError, 'Unable to get the API discovery'

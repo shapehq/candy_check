@@ -134,6 +134,12 @@ module CandyCheck
       def expires_at
         read_datetime_from_millis('expiryTimeMillis')
       end
+
+      # see if this the subscription is ack'ed
+      # @return [bool]
+      def acknowledged?
+        read_integer('acknowledgementState') == 1
+      end
     end
   end
 end
