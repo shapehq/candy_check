@@ -9,7 +9,11 @@ module CandyCheck
       def call!
         verify!
         if valid?
-          ReceiptCollection.new(@response['latest_receipt_info'])
+          if @response['latest_receipt_info'].is_a? Hash
+            ReceiptCollection.new(hash: @response['latest_receipt_info'])
+          else
+            ReceiptCollection.new(mapping: @response['latest_receipt_info'])
+          end
         else
           VerificationFailure.fetch(@response['status'])
         end
@@ -24,3 +28,4 @@ module CandyCheck
     end
   end
 end
+
