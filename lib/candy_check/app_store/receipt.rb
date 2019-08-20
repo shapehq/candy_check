@@ -88,7 +88,7 @@ module CandyCheck
       # The date of a subscription's expiration
       # @return [DateTime]
       def expires_date
-        read_datetime_from_string('expires_date')
+        read_datetime_from_millis('expires_date')
       end
 
       # rubocop:disable PredicateName
