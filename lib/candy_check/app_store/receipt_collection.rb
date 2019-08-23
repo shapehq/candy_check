@@ -12,7 +12,6 @@ module CandyCheck
       def initialize(hash: nil, mapping: nil)
         if (!mapping.nil?)
           @receipts = mapping.map do |r|
-            p r.inspect
             Receipt.new(r)
           end
         else
