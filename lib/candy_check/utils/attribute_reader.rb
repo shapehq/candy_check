@@ -27,6 +27,9 @@ module CandyCheck
       end
 
       def read_datetime_from_string(field)
+        p attributes
+        value = read(field)
+        return Time.at(value.to_i / 1000).utc.to_datetime if value.match %r(^[0-9]*$)
         (val = read(field)) && DateTime.parse(val)
       end
 
