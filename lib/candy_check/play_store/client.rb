@@ -13,7 +13,6 @@ module CandyCheck
     class Client
       # Error thrown if the discovery of the API wasn't successful
       class DiscoveryError < RuntimeError; end
-
       # API endpoint
       API_URL      = 'https://accounts.google.com/o/oauth2/token'.freeze
       # API scope for Android services
@@ -137,7 +136,7 @@ module CandyCheck
       end
 
       def validate_rpc!
-        return if rpc.purchases.products.get || rpc.purchases.acknowledge
+        return if rpc.purchases.products.get && rpc.purchases.products.acknowledge
         raise DiscoveryError, 'Unable to get the API discovery'
       rescue NoMethodError
         raise DiscoveryError, 'Unable to get the API discovery'
