@@ -77,11 +77,12 @@ module CandyCheck
       # @param subscription_id [String] the app's item id
       # @param token [String] the purchase token
       # @return [Hash] result of the API call
-      def acknowledge_purchase(package, subscription_id, token)
+      def acknowledge_purchase(package, subscription_id, token, developer_payload)
         parameters = {
             'packageName'    => package,
             'subscriptionId' => subscription_id,
-            'token'          => token
+            'token'          => token,
+            'developerPayload' => developer_payload
         }
         execute(parameters, rpc.purchases.subscriptions.acknowledge)
       end
