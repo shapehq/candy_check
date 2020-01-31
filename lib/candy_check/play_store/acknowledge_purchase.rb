@@ -36,7 +36,7 @@ module CandyCheck
       private
 
       def valid?
-        @response && @response['error'].nil?
+        @response && response.status == 204
       end
 
       def acknowledge!
