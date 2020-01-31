@@ -72,8 +72,7 @@ module CandyCheck
         execute(parameters, rpc.purchases.subscriptions.get)
       end
 
-
-      def acknowledge_purchase(package:, subscription_id:, token:, developer_payload: nil)
+      def acknowledge_purchase(package, subscription_id, token, developer_payload)
         parameters = {
           'packageName' => package,
           'subscriptionId' => subscription_id,

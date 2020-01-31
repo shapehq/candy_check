@@ -50,7 +50,7 @@ module CandyCheck
         v.call!
       end
 
-      def acknowledge_purchase(package, subscription_id, token, developer_payload)
+      def acknowledge_purchase(package, subscription_id, token, developer_payload = nil )
         check_boot!
         v = AcknowledgePurchase.new(
           @client, package, subscription_id, token, developer_payload

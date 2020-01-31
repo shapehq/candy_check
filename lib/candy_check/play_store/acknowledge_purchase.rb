@@ -30,13 +30,13 @@ module CandyCheck
       # @return [VerificationFailure] otherwise
       def call!
         acknowledge!
-        AcknowledgeFailure.new(@response['error']) unless valid?
+        AcknowledgeFailure.new(@response.data['error']) unless valid?
       end
 
       private
 
       def valid?
-        @response && response.status == 204
+        @response && @response.status == 204
       end
 
       def acknowledge!
