@@ -78,13 +78,9 @@ module CandyCheck
           'subscriptionId' => subscription_id,
           'token' => token
         }
-        if developer_payload.present?
-          body = {
-              'developerPayload' => developer_payload
-          }
-          parameters['body'] = body
-        end
-        execute_and_get_response(parameters, rpc.purchases.subscriptions.acknowledge)
+        developer_payload = { 'developerPayload' => developer_payload }
+
+        execute_and_get_response(parameters, rpc.purchases.subscriptions.acknowledge, developer_payload )
       end
 
       private
@@ -107,10 +103,13 @@ module CandyCheck
       # but return the result itself rather than body
       # @param api_method [Method] which api method to call
       # @return [hash] the data response, as a hash
-      def execute_and_get_response(parameters, api_method)
+      def execute_and_get_response(parameters, api_method, developerPayload)
         response = api_client.execute(
-            api_method: api_method,
-            parameters: parameters
+            :api_method => api_method,
+            :parameters => parameters,
+            :body=> developerPayload.to_json,
+            :headers => {'Content-Type' => "application/json" }
+
         )
         response
       end
