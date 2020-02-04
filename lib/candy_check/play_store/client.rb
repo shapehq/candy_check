@@ -79,7 +79,10 @@ module CandyCheck
           'token' => token
         }
         if developer_payload.present?
-          parameters['developerPayload'] = developer_payload
+          body = {
+              'developerPayload' => developer_payload
+          }
+          parameters['body'] = body
         end
         execute_and_get_response(parameters, rpc.purchases.subscriptions.acknowledge)
       end
