@@ -10,13 +10,15 @@ module CandyCheck
       # from Apple's verification server
       # @param attributes [Array<Hash>]
       def initialize(hash: nil, mapping: nil)
-        if (!mapping.nil?)
-          @receipts = mapping.map do |r|
+        receipts = if (!mapping.nil?)
+          mapping.map do |r|
             Receipt.new(r)
           end
         else
-          @receipts = [Receipt.new(hash)]
-        end
+          [Receipt.new(hash)]
+       end
+        # Sort by purchase date ascending: Older to most recent. Apple _should_ already be sending that
+        @receipts = receipts.sort_by!(&purchase_date).reverse!
       end
 
       # Check if the latest expiration date is passed
@@ -28,13 +30,13 @@ module CandyCheck
       # Check if in trial
       # @return [bool]
       def trial?
-        @receipts.last.is_trial_period
+        @receipts.first.is_trial_period
       end
 
       # Get latest expiration date
       # @return [DateTime]
       def expires_at
-        @receipts.last.expires_date
+        @receipts.first.expires_date
       end
 
       # Get number of overdue days. If this is negative, it is not overdue.
