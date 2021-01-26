@@ -18,7 +18,7 @@ module CandyCheck
           [Receipt.new(hash)]
        end
         # Sort by purchase date ascending: Older to most recent. Apple _should_ already be sending that
-        @receipts = receipts.sort_by(&purchase_date).reverse
+        @receipts = receipts.sort_by{ |receipt| receipt.purchase_date }.reverse
       end
 
       # Check if the latest expiration date is passed
